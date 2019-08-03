@@ -34,9 +34,18 @@ class authValidation {
       errors.firstName = 'First Name should be between 5 and 10 characters';
     }
 
+    if (!validator.isAlpha(firstName)) {
+      errors.firstName = 'First Name should be an alphabet';
+    }
+
     if (!validator.isLength(lastName, { min: 5, max: 10 })) {
       errors.lastName = 'Last Name should be between 5 and 10 characters';
     }
+
+    if (!validator.isAlpha(lastName)) {
+      errors.lastName = 'Last Name should be an alphabet';
+    }
+
     if (!validator.isEmail(email)) {
       errors.email = 'Please put in a valid email';
     }
@@ -46,6 +55,13 @@ class authValidation {
 
     // Check if error
     if (Object.keys(errors).length === 0) {
+      const user = {};
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.email = email;
+      user.password = password;
+
+      res.locals.user = user;
       return next();
     }
 
@@ -85,6 +101,10 @@ class authValidation {
 
     // Check if error
     if (Object.keys(errors).length === 0) {
+      const user = {};
+      user.email = email;
+      user.password = password;
+      res.locals.user = user;
       return next();
     }
 

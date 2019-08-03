@@ -22,7 +22,7 @@ class authController {
         lastName,
         email,
         password
-      } = req.body;
+      } = res.locals.user;
 
       const isEmailExist = await User.findOne({
         where: {
@@ -79,7 +79,7 @@ class authController {
       const {
         email,
         password
-      } = req.body;
+      } = res.locals.user;
 
       const isEmailExist = await User.findOne({
         where: {
