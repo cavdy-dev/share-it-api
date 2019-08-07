@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import uuidv4 from 'uuid/v4';
 import { User } from '../db/models';
+import jwt from '../middleware/jwt';
 
 /**
  * @description Authentication Controller
@@ -54,9 +55,14 @@ class authController {
       user.user.firstName = isUser.firstName;
       user.user.lastName = isUser.lastName;
       user.user.email = isUser.email;
+      user.user.email = isUser.email;
+      const token = await jwt.generateToken(user);
+
       return res.status(201).json({
         status: 201,
-        message: user
+        message: {
+          user, token
+        },
       });
     } catch (error) {
       return res.status(500).json({
@@ -112,9 +118,12 @@ class authController {
       user.user.firstName = isEmailExist.firstName;
       user.user.lastName = isEmailExist.lastName;
       user.user.email = isEmailExist.email;
-      return res.status(200).json({
-        status: 200,
-        message: user
+      const token = await jwt.generateToken(user);
+      return res.status(201).json({
+        status: 201,
+        message: {
+          user, token
+        },
       });
     } catch (error) {
       return res.status(500).json({
