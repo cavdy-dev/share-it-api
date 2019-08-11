@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Share = sequelize.define('Share', {
+    ideaId: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     userId: {
       type: DataTypes.STRING,
       allowNull: false

@@ -4,8 +4,12 @@ module.exports = {
       id: {
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      ideaId: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.STRING
       },
       userId: {
         type: Sequelize.STRING,

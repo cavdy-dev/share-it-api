@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4';
 import { Share } from '../db/models';
 
 /**
@@ -5,7 +6,6 @@ import { Share } from '../db/models';
  * @class ShareController
  */
 class ShareController {
-
   /**
    * @description Create Ideas
    * @param {object} req
@@ -20,6 +20,7 @@ class ShareController {
       const { userId } = user;
 
       const idea = await Share.create({
+        ideaId: uuidv4(),
         userId,
         body: message
       });
@@ -27,6 +28,72 @@ class ShareController {
       return res.status(201).json({
         status: 201,
         data: idea,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: 500,
+        data: err.message,
+      });
+    }
+  }
+
+  /**
+   * @description Update Ideas
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} Idea
+   * @memberof ShareController
+   */
+  static async updateIdea(req, res) {
+    try {
+      const { ideaId } = req.params;
+      const { message } = req.body;
+
+      await Share.update(
+        {
+          body: message
+        },
+        {
+          where: {
+            ideaId
+          }
+        }
+      );
+
+      return res.status(201).json({
+        status: 201,
+        data: 'Idea has been updated',
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: 500,
+        data: err.message,
+      });
+    }
+  }
+
+  /**
+   * @description Delete Ideas
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} Idea
+   * @memberof ShareController
+   */
+  static async deleteIdea(req, res) {
+    try {
+      const { ideaId } = req.params;
+
+      await Share.destroy(
+        {
+          where: {
+            ideaId
+          }
+        }
+      );
+
+      return res.status(201).json({
+        status: 201,
+        data: 'Idea has been deleted',
       });
     } catch (err) {
       return res.status(500).json({
