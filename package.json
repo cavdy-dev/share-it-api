@@ -28,7 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.8.12",
+    "sequelize": "^5.15.1",
     "uuid": "^3.3.2",
     "validator": "^11.1.0"
   },
