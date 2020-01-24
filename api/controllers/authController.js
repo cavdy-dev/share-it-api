@@ -18,12 +18,7 @@ class authController {
    */
   static async register(req, res) {
     try {
-      const {
-        firstName,
-        lastName,
-        email,
-        password
-      } = res.locals.user;
+      const { firstName, lastName, email, password } = res.locals.user;
 
       const isEmailExist = await User.findOne({
         where: {
@@ -38,33 +33,28 @@ class authController {
         });
       }
 
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(password, salt);
+      const hashedPassword = bcrypt.hashSync(password, 12);
 
-      const isUser = await User.create({
+      await User.create({
         userId: uuidv4(),
         firstName,
         lastName,
         email,
-        password: hash
+        password: hashedPassword
       });
 
-      const user = {};
-      user.user = {};
-      user.user.userId = isUser.userId;
-      user.user.firstName = isUser.firstName;
-      user.user.lastName = isUser.lastName;
-      user.user.email = isUser.email;
-      user.user.email = isUser.email;
+      const user = { userID, firstName, lastName, email };
       const token = await jwt.generateToken(user);
 
       return res.status(201).json({
         status: 201,
         message: {
-          user, token
-        },
+          user,
+          token
+        }
       });
     } catch (error) {
+      console.error(error);
       return res.status(500).json({
         status: 500,
         message: error.message
@@ -82,10 +72,7 @@ class authController {
    */
   static async login(req, res) {
     try {
-      const {
-        email,
-        password
-      } = res.locals.user;
+      const { email, password } = res.locals.user;
 
       const isEmailExist = await User.findOne({
         where: {
@@ -102,8 +89,10 @@ class authController {
         });
       }
 
-      const comparePassword = bcrypt
-        .compareSync(password, isEmailExist.password);
+      const comparePassword = bcrypt.compareSync(
+        password,
+        isEmailExist.password
+      );
 
       if (!comparePassword) {
         return res.status(400).json({
@@ -112,20 +101,19 @@ class authController {
         });
       }
 
-      const user = {};
-      user.user = {};
-      user.user.userId = isEmailExist.userId;
-      user.user.firstName = isEmailExist.firstName;
-      user.user.lastName = isEmailExist.lastName;
-      user.user.email = isEmailExist.email;
+      const { userID, firstName, lastName } = isEmailExist;
+      const user = { userID, firstName, lastName, email };
+
       const token = await jwt.generateToken(user);
       return res.status(201).json({
         status: 201,
         message: {
-          user, token
-        },
+          user,
+          token
+        }
       });
     } catch (error) {
+      console.error(error);
       return res.status(500).json({
         status: 500,
         message: error.message
