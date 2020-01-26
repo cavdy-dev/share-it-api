@@ -1,4 +1,5 @@
 import express from 'express';
+import userRoute from './userRoutes';
 
 const router = express.Router();
 
@@ -8,6 +9,8 @@ router.get('/', (req, res) => {
     message: 'Welcome to our API'
   });
 });
+
+router.use('/api/v1/auth', userRoute);
 
 router.use('*', (req, res) => {
   res.status(404).json({
