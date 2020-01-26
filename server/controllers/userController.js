@@ -16,14 +16,16 @@ class UserController {
   static async createUser(req, res) {
     try {
       const {
-        user: { email, password }
+        user: { email, password },
+        token
       } = res.locals;
 
       const hash = hashPassword(password);
       await User.create({ userId: uuid(), email, password: hash });
       res.status(201).json({
         status: 201,
-        message: 'Successfully signed up'
+        message: 'Successfully signed up',
+        token
       });
     } catch (err) {
       console.log(err.message);
