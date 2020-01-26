@@ -24,5 +24,8 @@ module.exports = {
     host: process.env.DB_PROD_DBHOST,
     dialect: 'postgres',
     operatorsAliases: false
-  }
+  },
+  port: process.env.PORT || 4000,
+  jwtToken: process.env.JWT_TOKEN,
+  clientKey: process.env.CLIENT_KEY
 };
