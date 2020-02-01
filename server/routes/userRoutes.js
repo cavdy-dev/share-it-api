@@ -1,19 +1,25 @@
 import express from 'express';
 import userController from '../controllers/userController';
-import userValidation from '../middlewares/validations/userValidation';
+import Validation from '../middlewares/validations/userValidation';
 import headers from '../middlewares/headers';
 import check from '../middlewares/check';
 
 const { createUser, loginUser } = userController;
 const { generateToken, clientKey } = headers;
-const { checkIfEmailExist, checkIfEmailDontExist } = check;
+const {
+  checkIfEmailExist,
+  checkIfUsernameExist,
+  checkIfEmailDontExist
+} = check;
+const { userSignupValidation, userLoginValidation } = Validation;
 
 const router = express.Router();
 
 router.post(
   '/register',
   clientKey,
-  userValidation,
+  userSignupValidation,
+  checkIfUsernameExist,
   checkIfEmailExist,
   generateToken,
   createUser
@@ -21,7 +27,7 @@ router.post(
 router.post(
   '/login',
   clientKey,
-  userValidation,
+  userLoginValidation,
   checkIfEmailDontExist,
   generateToken,
   loginUser
