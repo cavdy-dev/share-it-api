@@ -54,7 +54,7 @@ class Check {
       const usernameExist = await User.findOne({ where: { username } });
       if (usernameExist && Object.keys(usernameExist).length !== 0) {
         const error = {
-          email: 'Username already Exist'
+          username: 'Username already Exist'
         };
         return res.status(400).json({
           status: 400,
